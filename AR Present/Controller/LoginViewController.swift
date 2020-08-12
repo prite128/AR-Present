@@ -48,13 +48,16 @@ class LoginViewController: UIViewController {
 
 extension LoginViewController : UITextFieldDelegate {
     
-   
+    
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         self.view.endEditing(true)
         return false
     }
     
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        self.view.endEditing(true)
+    }
     
-
+    
     
 }
