@@ -9,7 +9,7 @@
 import UIKit
 import ARKit
 
-struct PictureModel {
+struct PictureModel : Hashable {
     
     var ArModelImage    : ARReferenceImage?
     var ArModelName     : String?

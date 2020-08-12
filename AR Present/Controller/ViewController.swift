@@ -25,6 +25,8 @@ class ViewController: UIViewController, ARSCNViewDelegate  , KeyDataDelegate{
     
     var mainKeyData : MainKeyData   =   MainKeyData()
     
+    var pictureModels : [PictureModel]?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -84,13 +86,38 @@ class ViewController: UIViewController, ARSCNViewDelegate  , KeyDataDelegate{
                 let plane   =   SCNPlane(width: imageAnchor.referenceImage.physicalSize.height, height: imageAnchor.referenceImage.physicalSize.width)
                 
                 let planeNode = SCNNode(geometry: plane)
+              
+                print("before if anchor")
                 
-                if let image    =   pictureImage {
+                
+                if let safePictureModels =   pictureModels {
                     
+                    print("in if anchor")
+                    
+                    print(safePictureModels.count)
+                    
+                    safePictureModels.forEach { (PictureModel) in
+                        
+                            print("in view controller \(imageAnchor.referenceImage.name ) : \(PictureModel.ArModelName)")
+                        
+                        if imageAnchor.referenceImage.name  ==  PictureModel.ArModelName {
+                            
 
-                    plane.firstMaterial?.diffuse.contents   =  image
+                                
+//                                print("beffore set image")
+                            plane.firstMaterial?.diffuse.contentsTransform = SCNMatrix4Translate(SCNMatrix4MakeScale(1, -1, 1), 0, 1, 0)
+                                plane.firstMaterial?.diffuse.contents   =  PictureModel.ArPictureImage
+                             
+                            
+//                            print("after set image \(PictureModel.ArPictureImage)")
+                                
+                            
+                            
+                        }
+                    }
                     
                 }
+                
                 
                 planeNode.eulerAngles.x =   -.pi/2
                 
@@ -117,11 +144,34 @@ class ViewController: UIViewController, ARSCNViewDelegate  , KeyDataDelegate{
           
       }
       
-      func didUpdateImages(Images: UIImage) {
-          
-            pictureImage  =   Images
+    func didUpdateImages(with PictureModel : [PictureModel]) {
+        
+        print("in view controller PictureModel : \(PictureModel.count) ")
+        
+//        let safeArray = Array(Set(PictureModel))
+        
+        PictureModel.forEach { (PictureModel) in
+            print("didUpdateImages with ArPictureName : \(PictureModel.ArPictureName!)")
+            print("didUpdateImages with ArModelName : \(PictureModel.ArModelName!)")
+        }
+            pictureModels   =   PictureModel
         
       }
     
 }
+
+extension Array where Element: Hashable {
+    func removingDuplicates() -> [Element] {
+        var addedDict = [Element: Bool]()
+
+        return filter {
+            addedDict.updateValue(true, forKey: $0) == nil
+        }
+    }
+
+    mutating func removeDuplicates() {
+        self = self.removingDuplicates()
+    }
+}
+
 

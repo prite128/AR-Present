@@ -10,7 +10,7 @@ import UIKit
 import Firebase
 
 class LoginViewController: UIViewController {
-
+    
     
     @IBOutlet weak var userNameTextField: UITextField!
     
@@ -19,7 +19,8 @@ class LoginViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        // Do any additional setup after loading the view.
+        userNameTextField.delegate  =   self
+        passwordTextField.delegate  =   self
     }
     
     
@@ -28,7 +29,7 @@ class LoginViewController: UIViewController {
         if let email   =   userNameTextField.text , let password = passwordTextField.text {
             
             Auth.auth().signIn(withEmail: email, password: password) {  authResult, error in
-               
+                
                 if let e = error {
                     print(e)
                     
@@ -36,20 +37,24 @@ class LoginViewController: UIViewController {
                 else{
                     self.performSegue(withIdentifier: K.loginToArSegue, sender: self)
                 }
-                 
+                
             }
         }
         
     }
     
-    /*
-    // MARK: - Navigation
+    
+}
 
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+extension LoginViewController : UITextFieldDelegate {
+    
+   
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        self.view.endEditing(true)
+        return false
     }
-    */
+    
+    
 
+    
 }
