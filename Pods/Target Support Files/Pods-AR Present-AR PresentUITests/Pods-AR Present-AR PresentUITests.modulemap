@@ -1,0 +1,6 @@
+framework module Pods_AR_Present_AR_PresentUITests {
+  umbrella header "Pods-AR Present-AR PresentUITests-umbrella.h"
+
+  export *
+  module * { export * }
+}
